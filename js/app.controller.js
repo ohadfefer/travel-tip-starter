@@ -53,7 +53,7 @@ function renderLocs(locs) {
             ${distance ? `<p>Distance: ${distance}</p>` : ''}
             <p class="muted">
                 Created: ${utilService.elapsedTime(loc.createdAt)}
-                ${(loc.createdAt !== loc.updatedAt) ?
+                ${(loc.updatedAt && loc.createdAt !== loc.updatedAt) ?
                 ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}`
                 : ''}
             </p>
@@ -272,6 +272,9 @@ function onSetFilterBy({ txt, minRate }) {
 function renderLocStats() {
     locService.getLocCountByRateMap().then(stats => {
         handleStats(stats, 'loc-stats-rate')
+    })
+    locService.getLocCountByUpdateMap().then(stats => {
+        handleStats(stats, 'loc-stats-update')
     })
 }
 
