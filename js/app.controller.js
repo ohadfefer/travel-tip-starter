@@ -226,7 +226,7 @@ function getFilterByFromQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
     const txt = queryParams.get('txt') || ''
     const minRate = queryParams.get('minRate') || 0
-    locService.setFilterBy({txt, minRate})
+    locService.setFilterBy({ txt, minRate })
 
     document.querySelector('input[name="filter-by-txt"]').value = txt
     document.querySelector('input[name="filter-by-rate"]').value = minRate
@@ -242,10 +242,20 @@ function onSetSortBy() {
     const prop = document.querySelector('.sort-by').value
     const isDesc = document.querySelector('.sort-desc').checked
 
+    console.log('onSetSortBy()');             // check
+    console.log('prop', prop);                // check
+    console.log('isDesc', isDesc);            // check
+
+
     if (!prop) return
 
     const sortBy = {}
+    console.log('sortBy[prop]', sortBy[prop]); // check
     sortBy[prop] = (isDesc) ? -1 : 1
+
+    console.log('sortBy', sortBy);             // check
+    console.log('sortBy[prop]', sortBy[prop]); // check
+
 
     // Shorter Syntax:
     // const sortBy = {
@@ -253,6 +263,10 @@ function onSetSortBy() {
     // }
 
     locService.setSortBy(sortBy)
+    console.log('locService', locService); // check
+    console.log('locService', locService); // check
+
+
     loadAndRenderLocs()
 }
 
