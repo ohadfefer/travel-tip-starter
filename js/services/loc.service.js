@@ -57,8 +57,6 @@ function query() {
             } else if (gSortBy.createdAt !== undefined) {
                 locs.sort((p1, p2) => (p1.createdAt - p2.createdAt) * gSortBy.createdAt)
             }            
-            console.log('locs', locs);
-            
             return locs
         })
 }
@@ -103,8 +101,6 @@ function getLocCountByRateMap() {
 
 function setSortBy(sortBy = {}) {
     gSortBy = sortBy
-    console.log('gSortBy', gSortBy);
-
 }
 
 function _createLocs() {

@@ -38,7 +38,8 @@
                     <div>
                         <label>
                             Min Rate:
-                            <input name="filter-by-rate" type="range" min="0" max="5" value="0" class="filter-rate-range"
+                            <input name="filter-by-rate" type="range" min="0" max="5" value="0"
+                                class="filter-rate-range"
                                 onchange="this.title=this.value;app.onSetFilterBy({minRate: this.value})" />
                         </label>
                     </div>
@@ -70,6 +71,19 @@
     </main>
     <pre class="debug" hidden></pre>
     <div class="user-msg"></div>
+
+    <dialog closedby="any" class="loc-dialog" data-geo="">
+        <form method="dialog">
+            <label for="loc-name">
+                <input name="loc-name" id="loc-name" type="text" placeholder="Location Name" required />
+            </label>
+            <label for="loc-rating">
+                <input name="loc-rating" id="loc-rating" type="number" placeholder="rating (1 - 5)" required />
+            </label>
+            <button class="confirm-btn">save</button>
+        </form>
+    </dialog>
+
     <script type="module" src="js/app.controller.js"></script>
 </body>
 

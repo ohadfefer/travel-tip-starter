@@ -16,9 +16,13 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
+    onDialogSubmit,
 }
 
 var gUserPos = null
+var gEditLoc = null
+var gGeoToSave = null
+
 
 function onInit() {
     getFilterByFromQueryParams()
@@ -102,24 +106,9 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-    const locName = prompt('Loc name', geo.address || 'Just a place')
-    if (!locName) return
-
-    const loc = {
-        name: locName,
-        rate: +prompt(`Rate (1-5)`, '3'),
-        geo
-    }
-    locService.save(loc)
-        .then((savedLoc) => {
-            flashMsg(`Added Location (id: ${savedLoc.id})`)
-            utilService.updateQueryParams({ locId: savedLoc.id })
-            loadAndRenderLocs()
-        })
-        .catch(err => {
-            console.error('OOPs:', err)
-            flashMsg('Cannot add location')
-        })
+    gEditLoc = null
+    gGeoToSave = geo
+    openLocDialog({ name: '', rate: 3 })
 }
 
 function loadAndRenderLocs() {
@@ -149,20 +138,13 @@ function onPanToUserPos() {
 function onUpdateLoc(locId) {
     locService.getById(locId)
         .then(loc => {
-            const rate = prompt('New rate?', loc.rate)
-            if (rate && rate !== loc.rate) {
-                loc.rate = rate
-                locService.save(loc)
-                    .then(savedLoc => {
-                        flashMsg(`Rate was set to: ${savedLoc.rate}`)
-                        loadAndRenderLocs()
-                    })
-                    .catch(err => {
-                        console.error('OOPs:', err)
-                        flashMsg('Cannot update location')
-                    })
-
-            }
+            gEditLoc = loc
+            gGeoToSave = null
+            openLocDialog(loc)
+        })
+        .catch(err => {
+            console.error('err:', err)
+            flashMsg('Cannot load location for edit')
         })
 }
 
@@ -261,11 +243,11 @@ function onSetSortBy() {
     if (!prop) return
 
     const sortBy = {}
-    console.log('sortBy[prop]', sortBy[prop]); 
+    console.log('sortBy[prop]', sortBy[prop]);
     sortBy[prop] = (isDesc) ? -1 : 1
 
-    console.log('sortBy', sortBy);             
-    console.log('sortBy[prop]', sortBy[prop]); 
+    console.log('sortBy', sortBy);
+    console.log('sortBy[prop]', sortBy[prop]);
 
 
     // Shorter Syntax:
@@ -341,4 +323,59 @@ function cleanStats(stats) {
         return acc
     }, [])
     return cleanedStats
+}
+
+function openLocDialog({ name = '', rate = 1 }) {
+    const elDialog = document.querySelector('.loc-dialog')
+    const elForm = elDialog.querySelector('form')
+    const elLocName = elDialog.querySelector('#loc-name')
+    const elLocRating = elDialog.querySelector('#loc-rating')
+
+    elLocName.value = name
+    elLocRating.value = rate
+
+    elDialog.showModal()
+
+    elForm.onsubmit = onDialogSubmit
+}
+
+function onDialogSubmit(ev) {
+    ev.preventDefault()
+    const elDialog = document.querySelector('.loc-dialog')
+    const elLocName = document.querySelector('#loc-name')
+    const elLocRating = document.querySelector('#loc-rating')
+
+    const name = elLocName.value
+    const rate = +elLocRating.value
+
+    if (!name || !rate || rate < 1 || rate > 5) {
+        flashMsg('Please fill valid name & rate (1-5)')
+        return
+    }
+
+    if (gEditLoc) {
+        // UPDATE
+        gEditLoc.name = name
+        gEditLoc.rate = rate
+        locService.save(gEditLoc)
+            .then(saved => {
+                flashMsg(`Updated: ${saved.name}`)
+                loadAndRenderLocs()
+            })
+            .catch(() => flashMsg('Cannot update location'))
+    } else {
+        // ADD
+        const loc = { name, rate, geo: gGeoToSave }
+        locService.save(loc)
+            .then(saved => {
+                flashMsg(`Added Location (id: ${saved.id})`)
+                utilService.updateQueryParams({ locId: saved.id })
+                loadAndRenderLocs()
+            })
+            .catch(() => flashMsg('Cannot add location'))
+    }
+
+    gEditLoc = null
+    gGeoToSave = null
+    elDialog.close()
 }

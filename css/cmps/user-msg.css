@@ -11,3 +11,8 @@
     bottom: 10px;
     transition: bottom .5s;
 }
+
+.loc-dialog {
+    position: fixed;
+    top: 50%;
+}
