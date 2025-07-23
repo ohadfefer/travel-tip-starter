@@ -242,19 +242,19 @@ function onSetSortBy() {
     const prop = document.querySelector('.sort-by').value
     const isDesc = document.querySelector('.sort-desc').checked
 
-    console.log('onSetSortBy()');             // check
-    console.log('prop', prop);                // check
-    console.log('isDesc', isDesc);            // check
+    console.log('onSetSortBy()');
+    console.log('prop', prop);
+    console.log('isDesc', isDesc);
 
 
     if (!prop) return
 
     const sortBy = {}
-    console.log('sortBy[prop]', sortBy[prop]); // check
+    console.log('sortBy[prop]', sortBy[prop]); 
     sortBy[prop] = (isDesc) ? -1 : 1
 
-    console.log('sortBy', sortBy);             // check
-    console.log('sortBy[prop]', sortBy[prop]); // check
+    console.log('sortBy', sortBy);             
+    console.log('sortBy[prop]', sortBy[prop]); 
 
 
     // Shorter Syntax:
