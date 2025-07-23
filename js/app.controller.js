@@ -47,6 +47,7 @@ function renderLocs(locs) {
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             ${distance ? `<p>Distance: ${distance}</p>` : ''}
+            <p class="muted">
                 Created: ${utilService.elapsedTime(loc.createdAt)}
                 ${(loc.createdAt !== loc.updatedAt) ?
                 ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}`
