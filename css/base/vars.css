@@ -1,3 +1,4 @@
+/*
 :root {
     --bg1: darkslateblue;
     --bg2: darkorchid;
@@ -8,15 +9,15 @@
     --color4: goldenrod;
     --gray1: lightgray;
 }
+*/
 
-/* Another theme */
-/* :root {
-    --bg1: rgb(37, 13, 195);
-    --bg2: rgb(26, 110, 146);
-    --bg3: rgb(9, 49, 226);
-    --color1: aliceblue;
+:root {
+    --bg1: rgba(60, 60, 60, 1);
+    --bg2: rgba(133, 131, 131, 0);
+    --bg3: rgba(159, 159, 160, 0.897);
+    --color1: rgb(255, 255, 255);
     --color2: rgb(94, 169, 240);
-    --color3: rgb(211, 187, 48);
-    --color4: rgb(90, 66, 6);
+    --color3: rgb(255, 196, 0);
+    --color4: rgba(255, 255, 255, 0.699);
     --gray1: lightgray;
-} */
+} 
